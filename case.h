@@ -90,7 +90,7 @@ void case_append(void **dest, void *src)
         case_resize(dest, new_len * GROW_FACTOR);
     }
 
-    void *rv = memcpy((char *) *dest + case_len(*dest) * case_size(*dest), src, case_len(src));
+    void *rv = memcpy((char *) *dest + case_len(*dest) * case_size(*dest), src, case_len(src) * case_size(src));
     assert(rv != NULL);
     case_len(*dest) = new_len;
 }
@@ -103,7 +103,7 @@ void case_shift_left(void *arr, size_t start)
     void *first = malloc(case_size(arr));
     memcpy(first, (char *) arr + start * case_size(arr), case_size(arr));
 
-    memmove((char *) arr + start * case_size(arr), (char *) arr + (start + 1) * case_size(arr), diff);
+    memmove((char *) arr + start * case_size(arr), (char *) arr + (start + 1) * case_size(arr), diff * case_size(arr));
 
     memcpy((char *) arr + (case_len(arr) - 1) * case_size(arr), first, case_size(arr));
     free(first);
@@ -117,7 +117,7 @@ void case_shift_right(void *arr, size_t start)
     void *last = malloc(case_size(arr));
     memcpy(last, (char *) arr + (case_len(arr) - 1) * case_size(arr), case_size(arr));
 
-    memmove((char *) arr + (start + 1) * case_size(arr), (char *) arr + start * case_size(arr), diff);
+    memmove((char *) arr + (start + 1) * case_size(arr), (char *) arr + start * case_size(arr), diff * case_size(arr));
 
     memcpy((char *) arr + start * case_size(arr), last, case_size(arr));
     free(last);
