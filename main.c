@@ -1,38 +1,38 @@
 #include <stdio.h>
 
-#define ARR_IMPLEMENTATION
-#include "./arr.h"
+#define CASE_IMPLEMENTATION
+#include "./case.h"
 
 
 int main(void)
 {
-    char *arr = arr_init(3, sizeof(*arr));
+    char *arr = case_init(3, sizeof(*arr));
 
-    arr_push(arr, 'H');
-    arr_push(arr, 'e');
-    arr_push(arr, 'l');
-    arr_push(arr, 'l');
-    arr_push(arr, 'o');
+    case_push(arr, 'H');
+    case_push(arr, 'e');
+    case_push(arr, 'l');
+    case_push(arr, 'l');
+    case_push(arr, 'o');
 
-    char *world = arr_init(2, sizeof(*arr));
+    char *world = case_init(2, sizeof(*arr));
 
-    arr_push(world, ',');
-    arr_push(world, ' ');
-    arr_push(world, 'w');
-    arr_push(world, 'o');
-    arr_push(world, 'r');
-    arr_push(world, 'l');
-    arr_push(world, 'd');
+    case_push(world, ',');
+    case_push(world, ' ');
+    case_push(world, 'w');
+    case_push(world, 'o');
+    case_push(world, 'r');
+    case_push(world, 'l');
+    case_push(world, 'd');
 
-    arr_print(arr, "%c");
-    arr_print(world, "%c");
-    arr_append((void *) &arr, world);
-    arr_print(arr, "%c");
-    printf("Removed: %c\n", arr_remove(arr, 1));
-    arr_print(arr, "%c");
-    arr_insert(arr, 'e', 1);
-    arr_print(arr, "%c");
+    case_print(arr, "%c");
+    case_print(world, "%c");
+    case_append((void *) &arr, world);
+    case_print(arr, "%c");
+    printf("Removed: %c\n", case_remove(arr, 1));
+    case_print(arr, "%c");
+    case_insert(arr, 'e', 1);
+    case_print(arr, "%c");
 
-    arr_free(arr);
-    arr_free(world);
+    case_free(arr);
+    case_free(world);
 }
