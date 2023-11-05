@@ -1,39 +1,38 @@
 #include <stdio.h>
-#include <string.h>
-#include <stdint.h>
 
 #define ARR_IMPLEMENTATION
 #include "./arr.h"
 
-// TODO: implmentations
-// append (combine two arrs)
-// with_capacity (init with user set cap)
-// clear (reste array)
-// equals (check equality according to qsort(3))
-// remove (remove element at index, shifting all values to the left) O(n)
-// resize (make len equal to new_len (takes fill value if new is greater))
-// insert (set index to val, shifiting all values after to the right) O(n)
-// get
-
 
 int main(void)
 {
-    size_t i;
-    size_t *arr = arr_init(3, sizeof(*arr));
+    char *arr = arr_init(3, sizeof(*arr));
 
-    arr_push(arr, 69);
-    arr_push(arr, 32);
-    arr_push(arr, 34);
-    arr_push(arr, 35);
+    arr_push(arr, 'H');
+    arr_push(arr, 'e');
+    arr_push(arr, 'l');
+    arr_push(arr, 'l');
+    arr_push(arr, 'o');
 
-    printf("[ ");
-    for (i = 0; i < arr_len(arr); ++i) {
-        printf("%zu ", arr[i]);
-    }
-    printf("]\n");
-    printf("Pop %zu\n", arr_pop(arr));
-    printf("Pop %zu\n", arr_pop(arr));
-    printf("Pop %zu\n", arr_pop(arr));
-    printf("Pop %zu\n", arr_pop(arr));
+    char *world = arr_init(2, sizeof(*arr));
+
+    arr_push(world, ',');
+    arr_push(world, ' ');
+    arr_push(world, 'w');
+    arr_push(world, 'o');
+    arr_push(world, 'r');
+    arr_push(world, 'l');
+    arr_push(world, 'd');
+
+    arr_print(arr, "%c");
+    arr_print(world, "%c");
+    arr_append((void *) &arr, world);
+    arr_print(arr, "%c");
+    printf("Removed: %c\n", arr_remove(arr, 1));
+    arr_print(arr, "%c");
+    arr_insert(arr, 'e', 1);
+    arr_print(arr, "%c");
+
     arr_free(arr);
+    arr_free(world);
 }
