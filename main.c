@@ -13,6 +13,13 @@ struct GenStruct {
     size_t len;
 };
 
+typedef struct ArrPre ArrPre;
+struct ArrPre {
+    size_t capacity;
+    size_t len;
+    size_t size;
+};
+
 
 #define genarr_init(arr, cap) \
     _genarr_init((void *) &(arr), \
@@ -35,15 +42,26 @@ void _genarr_init(void *arr, size_t capacity, size_t item_size,
     *len = 0;
     *cap = capacity;
 
-    void *mem = malloc(item_size * capacity);
-    *items = (size_t) mem;
-    assert(items != NULL && "Malloc failed: buy more ram");
+    void *base = malloc(item_size * capacity + sizeof(ArrPre));
+    assert(base != NULL && "Malloc failed: buy more ram");
+    *items = (size_t) (char *) base + sizeof(ArrPre);
+    printf("base  addr %p\n", base);
+    printf("items val  0x%lx\n", *items);
+
+    ArrPre *base_arr = base;
+    base_arr->len = 0;
+    base_arr->capacity = capacity;
+    base_arr->size = item_size;
+    // printf("init cap: %zu\n", base_arr->capacity);
+    // items[0] = 70;
+    // printf("init item: %zu\n", items[0]);
     return;
 }
 
 void _genarr_free(void *arr, size_t items_offset)
 {
-    size_t *items = (size_t *) ((char *) arr + items_offset);
+    size_t *items = (size_t *) ((char *) arr - sizeof(ArrPre));
+    printf("free       %p\n", (void *) *items);
 
     free((void *) *items);
     return;
@@ -116,15 +134,16 @@ int main(void)
 {
     GenStruct arr;
     genarr_init(arr, (3));
-    printf("Cap: %zu\n", arr.capacity);
-    char foo = 'A';
-    genarr_append(arr, 'C');
+    printf("main addr  %lx\n", *arr.items);
+    // printf("Cap: %zu\n", arr.capacity);
+    // char foo = 'A';
+    //genarr_append(arr, 'C');
     // genarr_append_grow_if_needed(arr);
     // arr.items[arr.len - 1] = 'C';
-    genarr_append(arr, foo);
-    char bar = 'B';
-    genarr_append(arr, bar);
-    printf("Cap: %zu\n", arr.capacity);
-    genarr_print(arr);
+    //genarr_append(arr, foo);
+    // char bar = 'B';
+    //genarr_append(arr, bar);
+    // printf("Cap: %zu\n", arr.capacity);
+    // genarr_print(arr);
     genarr_free(arr);
 }
